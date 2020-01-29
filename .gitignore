@@ -39,3 +39,4 @@ rust
 process_bed
 rg
 slurm_state
+prepare_copy
