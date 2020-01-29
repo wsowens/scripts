@@ -99,4 +99,5 @@ if __name__ == "__main__":
         if fdir in kwargs:
             if not kwargs[fdir].endswith("/"):
                 kwargs[fdir] += "/"
+    eprint("Processing %r with these parameters %r" % (args, kwargs))
     main(*args, **kwargs)
