@@ -60,5 +60,5 @@ bedtools unionbedg -g ${chroms} -empty -filler "0,0" -i ${cut_bedgraphs[*]} | aw
         print $1, $2, $3, unconverted / coverage, coverage, unconverted
 }'
 
-#rm -r "$cov_dir"
-#rm -r "$met_dir"
+rm -r "$cov_dir"
+rm -r "$met_dir"
