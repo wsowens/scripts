@@ -14,11 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# backup all provided files
+
 if [[ $1 == "" ]] || [[ $2 == "" ]]
 then
     echo "Usage: backup [target_dir] [file1] [file2] ... [fileN] "
     exit -1
 fi
+
 target=$1
 mkdir -p ${target}
 mv -vt ${target} ${@:2} && linkall ${target}/*
