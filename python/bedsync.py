@@ -153,13 +153,13 @@ def main(filename1, filename2, output, ifs="\t", ofs="\t", ors="\n", zero="0", r
 def bedpool(line, debug=False):
     '''properly combine two individual lines'''
     # the name of this function is a marvel reference
-    total = int(line[3]) + int(line[5])
-    unconverted = int(line[4]) + int(line[6])
+    total = int(line[4]) + int(line[7])
+    unconverted = int(line[5]) + int(line[8])
     merged = ""
-    if (line[3] != "0") and (line[5] != ""):
+    if (line[4] != "0") and (line[6] != ""):
         merged = "merged"
     if debug:
-        return [line[0], line[1], line[2], str(float(unconverted) / total), str(total), str(unconverted), line[3], line[4], line[5], line[6], merged]
+        return [line[0], line[1], line[2], str(float(unconverted) / total), str(total), str(unconverted), line[4], line[5], line[7], line[8], merged]
     return [line[0], line[1], line[2], str(float(unconverted) / total), str(total), str(unconverted)]
 
 
