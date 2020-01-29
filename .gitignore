@@ -1,44 +1,49 @@
-# note that this gitignore incldued mostly links
-# all of these files are found in the corresponding directory
-# or can be found in another repository
+.*.sw*
+__pycache__/*
+LOCAL_README.md
+# old programs kept for posterity
+archive/*
+# other binaries
+bin/*
 
-pyglob
-unsuffix
-filtercov
-waitfor
-quickfilter
-bedsync
-full
-nuclear
-clip4bw
-quickbg
+# files below this point are links to other programs
+# all of these files can be found either in this repo or in another repo,
+# depending upon their author
+
 backup
-suffix
-quickfix
-quickcut
-wig2bw
-tree
-lesswich
-fixdmap
-prefix
-unprefix
-quickclip
-mapped_reads
-wigproc
-resubmit_qsub
 bed2cov
-quickbw
 bed2meth
-vimwich
-archive
+bedsync
 checkfolder
-.*.swp
-HPG_README.md
-bin
-rust
+clip4bw
+dmap2_reads
+filtercov
+fixdmap
+full
+ironbed
+lesswich
+mapped_reads
+nuclear
+poolbed
+prefix
+prepare_copy
 process_bed
+pyglob
+quickbg
+quickbw
+quickclip
+quickcut
+quickfilter
+quickfix
+quickprocbed
+resubmit_qsub
 rg
 slurm_state
-prepare_copy
-dmap2_reads
-poolbed
+suffix
+tree
+unprefix
+unsuffix
+vimwich
+waitfor
+wig2bw
+wigproc
