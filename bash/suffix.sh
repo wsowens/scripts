@@ -14,7 +14,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+if [[ ${#@} -lt 2 ]]
+then
+    >&2 echo -e "Usage: suffix [suffix] [file1] ... [fileN]"
+    >&2 echo -e "Applies a suffix to each file."
+    exit
+fi
+
 suffix=$1
+for file in ${@:2}
+do
+    test=${file}${suffix}
+    if [[ -e "${test}" ]]
+    then
+        >&2 echo -e "Error: a file named ${test} already exists. Aborting."
+        exit
+    fi
+done
+
 for file in ${@:2}
 do
     mv $file "${file}${suffix}"
