@@ -33,29 +33,35 @@ def args_to_string(arglist):
     return args, kwargs
 
 
+def strip_bed(string):
+    if string.lower().endswith(".bed"):
+        return string[:-4]
+    else:
+        return string
+
+
 def main(bedfile, filter_dir=FILTER_DIR, fix_dir=FIX_DIR,  nuc_dir=NUC_DIR,
          meth_dir=METH_DIR, cov_dir=COV_DIR, bgtbw=bedGraphToBigWig,
          chroms=CHROMS, nuc_regex="'^ChrM|^ChrC'", filt=10):
     for fdir in [filter_dir, fix_dir, nuc_dir, meth_dir, cov_dir]:
         check_dir(fdir)
-    eprint("filtering %s" % bedfile)
     subprocess.call(["filtercov", str(filt), bedfile])
-    fn = bedfile.strip(".bed") + ".%i" % filt + ".bed"
+    fn = strip_bed(bedfile) + ".%i" % filt + ".bed"
     eprint("moving %s to %s" % (fn, filter_dir + fn))
     os.rename(fn, filter_dir + fn)
-    new_fn = fn.strip(".bed") + ".fixed.bed"
+    new_fn = strip_bed(fn) + ".fixed.bed"
     eprint("fixing %s and placing result in %s"
            % (filter_dir + fn, fix_dir + new_fn))
     subprocess.call(["fixdmap", filter_dir + fn, fix_dir + new_fn])
     fn = new_fn
-    new_fn = fn.strip(".bed") + ".nuclear.bed"
+    new_fn = strip_bed(fn) + ".nuclear.bed"
     eprint("filtering non-nuclear dna in %s -> %s"
            % (fix_dir + fn, nuc_dir + new_fn))
     with open(nuc_dir + new_fn, 'w') as nuc_file:
         subprocess.call(["grep", "-Eiv", nuc_regex, fix_dir + fn],
                         stdout=nuc_file)
-    meth_fn = meth_dir + new_fn.strip(".bed") + ".meth.bed"
-    cov_fn = cov_dir + new_fn.strip(".bed") + ".cov.bed"
+    meth_fn = meth_dir + strip_bed(new_fn) + ".meth.bed"
+    cov_fn = cov_dir + strip_bed(new_fn) + ".cov.bed"
     eprint("cutting %s into meth bedGraph %s"
            % (nuc_dir + new_fn, meth_fn))
     with open(meth_fn, 'w') as meth_file:
@@ -66,7 +72,7 @@ def main(bedfile, filter_dir=FILTER_DIR, fix_dir=FIX_DIR,  nuc_dir=NUC_DIR,
                         stdout=sorted_file)
     os.rename(meth_fn + "sorted", meth_fn)
     eprint("convering to bigwig")
-    meth_bw = meth_fn.strip(".bed") + ".bw"
+    meth_bw = strip_bed(meth_fn) + ".bw"
     subprocess.call([bedGraphToBigWig, meth_fn, chroms, meth_bw])
     eprint("cutting %s into cov bedGraph %s"
            % (nuc_dir + new_fn, cov_fn))
@@ -78,7 +84,7 @@ def main(bedfile, filter_dir=FILTER_DIR, fix_dir=FIX_DIR,  nuc_dir=NUC_DIR,
                         stdout=sorted_file)
     os.rename(cov_fn + "sorted", cov_fn)
     eprint("convering to bigwig")
-    cov_bw = cov_fn.strip(".bed") + ".bw"
+    cov_bw = strip_bed(cov_fn) + ".bw"
     subprocess.call([bedGraphToBigWig, cov_fn, chroms, cov_bw])
 
 
