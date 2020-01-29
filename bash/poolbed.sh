@@ -21,6 +21,12 @@ then
     exit 255
 fi
 
+if [ "$#"  -lt 3 ]
+then
+    >&2 echo "usage: poolbed [chrom.sizes] [bed1] [bed2] ..."
+    exit 255
+fi
+
 chroms=$1
 bedgraphs=${@:2}
 
@@ -29,12 +35,17 @@ met_dir=$(mktemp -d)
 
 for f in $bedgraphs
 do
-    cut -f1-3,5 $f > "${cov_dir}/$(basename ${f})"
-    cut -f6 $f | paste -d"," "${cov_dir}/$(basename ${f})" - > "${met_dir}/$(basename ${f})"
-    cut_bedgraphs+=("${met_dir}/$(basename ${f})")
+    # include the whole filename to avoid collisions
+    base=$(echo $f | tr / _)
+    #awk -v OFS="\t" -e '{print $1, $2, $3, $5 "," $6}'  > "${met_dir}/${base}.awk"
+    cut -f1-3,5 $f > "${cov_dir}/${base}"
+    cut -f6 $f | paste -d"," "${cov_dir}/${base}" - > "${met_dir}/${base}"
+    #diff "${met_dir}/${base}" "${met_dir}/${base}.awk"
+    cut_bedgraphs+=("${met_dir}/${base}")
 done
 
-bedtools unionbedg -g ${chroms} -empty -filler "0,0" -i ${cut_bedgraphs[*]} | awk -e '{
+>&2 echo "Cut files: ${cut_bedgraphs[*]}"
+bedtools unionbedg -g ${chroms} -empty -filler "0,0" -i ${cut_bedgraphs[*]} | awk -v OFS='\t' -e '{
     # iterate over every field and split on commas 
     coverage = 0
     unconverted = 0
@@ -49,5 +60,5 @@ bedtools unionbedg -g ${chroms} -empty -filler "0,0" -i ${cut_bedgraphs[*]} | aw
         print $1, $2, $3, unconverted / coverage, coverage, unconverted
 }'
 
-rm -r "$cov_dir"
-rm -r "$met_dir"
+#rm -r "$cov_dir"
+#rm -r "$met_dir"
