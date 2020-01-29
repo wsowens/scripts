@@ -37,14 +37,35 @@ You can use the `which` command to see the location of the original script/binar
 
 ```
 [wowens@login4 ~]$ which fixdmap
-/ufrc/riva/wowens/apps/fixdmap
+/ufrc/riva/wowens/apps/rust/fixdmap/target/release/fixdmap
 ```
 
 You can use the `lesswich` command to directly read the source for a script. 
 (See below for more information.)
 
 ## bedsync
+Python script to "sync" or "merge" 2 bedGraph files. That is to say, given the following:
 
+a.bedGraph
+```
+chr1  10  11  8   4   0.5
+chr1  13  15  3   3   1 
+```
+
+b.bedGraph
+```
+chr1  11  12  4   3   0.75
+chr1  13  15  5   3   0.6
+chr1  20  25  2   1   0.5
+```
+
+If you enter:
+`bedsync a.bedGraph b.bedGraph a+b.bedGraph```
+
+This will be a+b.bedGraph:
+```
+ERROR: this script must be debugged.
+```
 
 ## clip4bw
 ## filtercov
@@ -53,17 +74,36 @@ You can use the `lesswich` command to directly read the source for a script.
 ## lesswich
 ## mapped_reads
 ## nuclear
+
+Source: ./bash/nuclear.sh
+
+Uses Slurm's `srun` command to filter out non-nuclear DNA from an arbitray number of BED-like files. 
+
+Usage:
+```
+nuclear [bed1] [bed2] ...
+```
+
+Output files are named accordingly:
+
+```
+Input               Output
+test.bed        ->  test.nuclear.bed
+test.bedGraph   ->  test.nuclear.bed
+test.txt        ->  test.txt.nuclear.bed
+```
+
 ## prefix
 ## pyglob
 ## quickbg
 
 Source: ./bash/quickbg.sh
 
-Uses Slurm's `srun` command to process convert an arbitrary number of bedGraphs to bigwigs in parallel. 
+Uses Slurm's `srun` command to convert an arbitrary number of bedGraphs to bigwigs in parallel. 
 You must also provide a chrom.sizes file. 
 
 Usage:
-`quickbg [chrom.sizes] [bedGraph1] [bedGraph2]...`
+```quickbg [chrom.sizes] [bedGraph1] [bedGraph2]...```
 
 This uses UCSC's bedGraphToBigWig utility.
 You can easily copy and edit this script and change the path if you need to use a different binary.
@@ -76,7 +116,7 @@ Uses Slurm's `srun` command to process convert an arbitrary number of wigs to bi
 You must also provide a chrom.sizes file. 
 
 Usage:
-`quickbw [chrom.sizes] [wig1] [wig2] ...`
+```quickbw [chrom.sizes] [wig1] [wig2] ...```
 
 This uses UCSC's wigToBigWig utility.
 You can easily copy and edit this script and change the path if you need to use a different binary.
@@ -95,7 +135,7 @@ That is, any features with start/stop positions that exceed the chromosome's len
 You must also provide a chrom.sizes file. 
 
 Usage:
-`quickclip [chrom.sizes] [wig1] [wig2] ...`
+```quickclip [chrom.sizes] [wig1] [wig2] ...```
 
 This uses the clip4bw script internally. 
 You can easily copy and edit this script and change the path if you need to use a different binary.
@@ -103,9 +143,18 @@ You can easily copy and edit this script and change the path if you need to use 
 ## resubmit_qsub
 ## suffix
 ## tree
+
+Link to the tree binary, which is not installed on HiPerGator 2.0 as far as I can tell.
+More information here:
+<https://linux.die.net/man/1/tree>
+
 ## unprefix
 ## unsuffix
 ## vimwich
 ## waitfor
 ## wig2bw
+
+Link to the UCSC wigToBigWig binary.
+More information here:
+
 ## wigproc
