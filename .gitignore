@@ -10,10 +10,10 @@ bin/*
 # all of these files can be found either in this repo or in another repo,
 # depending upon their author
 
+annotateFiles.py
 backup
 bed2cov
 bed2meth
-bedsync
 checkfolder
 clip4bw
 dmap2_reads
@@ -27,6 +27,7 @@ nuclear
 poolbed
 prefix
 prepare_copy
+prepare_metilene
 process_bed
 pyglob
 quickbg

@@ -1,7 +1,4 @@
-#!/bin/sh
-
-# prepare files for metilene, the differential DNA metilene tool
-# http://www.bioinf.uni-leipzig.de/Software/metilene/
+#!/bin/bash
 
 # Copyright 2019 William Owens
 # 
@@ -17,15 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# this script expects BedGraph files containing methylation data
+# for example:
+# chrX 100 101 0.3
+# if you are using files from cscall / dmap2, you must cut them first
+# filter the files as necessary
+
 if [ "$#" -lt 2 ]
 then
-    >&2 echo "usage: prepare_metilene [group1 files] [group2 files]"
+    >&2 echo "usage: prepare_metilene [chrom.sizes] [group1 files] [group2 files]"
     >&2 echo "group1 and group2 files should be comma-separated"
     exit
 fi
 
+# check that users have a working version of bedtools
 which bedtools &> /dev/null
-
 if [ "$?" -gt 0 ]
 then
     >&2 echo "bedtools not found in path. This script requires bedtools unionbedg."
@@ -33,32 +36,42 @@ then
     exit 255
 fi
 
+if [ ! -e "$1" ]
+then
+    >&2 echo "Cannot find chrom.sizes file '${$1}'"
+else
+    chromsizes="$1"
+fi
+
+# processing the group 1 files
 g1=()
-for f in $(echo $1 | tr , "$IFS")
+for f in $(echo $2 | tr , "$IFS")
 do
     if [ ! -e "$f" ]
     then
-        >&2 echo "Cannot find file ${f}"
+        >&2 echo "Cannot find group 1 file '${f}'"
         exit 255
     fi
     g1+=($f)
 done
 >&2 echo "group1: ${g1[*]}"
 
+# processing the group 2 files
 g2=()
-for f in $(echo $2 | tr , "$IFS")
+for f in $(echo $3 | tr , "$IFS")
 do
+    # check that the file exists
     if [ ! -e "$f" ]
     then
-        >&2 echo "Cannot find file ${f}"
+        >&2 echo "Cannot find group 2 file '${f}'"
         exit 255
     fi
     g2+=($f)
 done
 >&2 echo "group2: ${g2[*]}"
 
-#write the header
-echo -ne "chr\tpos\tstop"
+# write the header
+echo -ne "chr\tpos"
 for f in "${g1[@]}"
 do
     echo -ne "\tg1_$f"
@@ -69,6 +82,7 @@ do
 done
 echo ""
 
-# run bedtools and cut out the unnecessary "stop" column
-# replace the chrom.sizes argument to -g as appropriate
-bedtools unionbedg -empty -g ~/chrom.sizes/hg38.chrom.sizes -i ${g1[*]} ${g2[*]}
+# run bedtools, adding "NULL" if a site has no information
+bedtools unionbedg --filler NULL -g "$chromsizes" -i ${g1[*]} ${g2[*]} \
+     | grep -v "NULL" \
+     | cut -f 1-2,4-    
