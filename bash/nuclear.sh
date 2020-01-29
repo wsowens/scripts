@@ -1,6 +1,6 @@
 # /usr/bin/bash 
 
-if [[ $1 == "" ]] || [[ $2 == "" ]]
+if [[ $1 == "" ]]
 then
     echo "Usage: nuclear [bedGraph1] ... [bedGraphN] "
     exit -1
