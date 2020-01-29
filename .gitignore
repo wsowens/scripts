@@ -30,3 +30,6 @@ archive
 checkfolder
 .*.swp
 HPG_README.md
+bin
+rust
+process_bed
