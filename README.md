@@ -1,47 +1,10 @@
-# wowscripts
+# scripts
 
-## Directory Structure
+Collection of scripts that I often use.
 
-This directory contains several subdirectories. All scripts, binaries, and source files are separated into these subdirectories based on the language they were written in.
-```
-.
-├── awk      [AWK Scripts]
-│       
-├── bash     [Bash Scripts (currently trying to make everything POSIX compliant)]
-│
-├── bin      [Binaries from other sources, like UCSC's wigToBigWig]
-│
-├── old      [Outdated scripts that I keep around for reference, do not use them.]
-│
-├── python   [Python scripts]
-│
-├── rust     [Rust source files + binaries]
-│
-└── sbatch   [slurm submission scripts]
-```
+## License
 
-In this directory, we also have symbolic links pointing to each executable file. For instance:
-
-`lrwxrwxrwx 1 wowens riva   35 Nov 29 18:38 bedsync -> /home/wowens/apps/python/bedsync.py`
-
-These symbolic links just point to the appropriate script/binary and can be executed as if they were a command. 
-I recommend adding this directory to the PATH environment variable. 
-If you are using Bash, you can just add this line to your `.bashrc`.
-```
-PATH=$PATH:/ufrc/riva/wowens/apps
-```
-Now you can simply type `bedsync` anywhere without having to write out the full path. 
-
-I realize this system may seem obfuscated.
-You can use the `which` command to see the location of the original script/binary.
-
-```
-[wowens@login4 ~]$ which fixdmap
-/ufrc/riva/wowens/apps/rust/fixdmap/target/release/fixdmap
-```
-
-You can use the `lesswich` command to directly read the source for a script. 
-(See below for more information.)
+These scripts are licensed under the Apache 2.0 License. See [LICENSE](LICENSE) for details.
 
 ## bedsync
 Python script to "sync" or "merge" 2 bedGraph files. That is to say, given the following:
@@ -68,16 +31,22 @@ ERROR: this script must be debugged.
 ```
 
 ## clip4bw
+
 ## filtercov
+
 ## fixdmap
+
 ## full
+
 ## lesswich
+
 ## mapped_reads
+
 ## nuclear
 
 Source: ./bash/nuclear.sh
 
-Uses Slurm's `srun` command to filter out non-nuclear DNA from an arbitray number of BED-like files. 
+Uses Slurm's `srun` command to filter out non-nuclear DNA from an arbitrary number of BED-like files. 
 
 Usage:
 ```
