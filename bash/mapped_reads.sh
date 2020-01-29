@@ -21,11 +21,11 @@
 if [[ $1 == "" ]]
 then
     echo "Usage: mapped_reads [bam file]"
-    exit -1
+    exit 255
 fi
 if [[ $HPC_SAMTOOLS_DIR == "" ]]
 then
-   echo "Error. Must load samtools module." 1>&2
-   exit -1
+    echo "Error. Must load samtools module." 1>&2
+    exit 255
 fi
 samtools idxstats $1 | head -n-1 | grep -v "ChrM\|ChrC" | cut -f3 | awk '{s+=$1}END{print s}'
