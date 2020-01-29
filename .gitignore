@@ -1,3 +1,7 @@
+# note that this gitignore incldued mostly links
+# all of these files are found in the corresponding directory
+# or can be found in another repository
+
 pyglob
 unsuffix
 filtercov
@@ -33,3 +37,5 @@ HPG_README.md
 bin
 rust
 process_bed
+rg
+slurm_state
