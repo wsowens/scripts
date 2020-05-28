@@ -28,13 +28,13 @@ then
 fi
 
 # check that users have a working version of bedtools
-which bedtools &> /dev/null
-if [ "$?" -gt 0 ]
-then
-    >&2 echo "bedtools not found in path. This script requires bedtools unionbedg."
-    >&2 echo "Install bedtools / load the module and rerun this script."
-    exit 255
-fi
+#which bedtools &> /dev/null
+#if [ "$?" -gt 0 ]
+#then
+#    >&2 echo "bedtools not found in path. This script requires bedtools unionbedg."
+#    >&2 echo "Install bedtools / load the module and rerun this script."
+#    exit 255
+#fi
 
 if [ ! -e "$1" ]
 then
@@ -83,6 +83,4 @@ done
 echo ""
 
 # run bedtools, adding "NULL" if a site has no information
-bedtools unionbedg --filler NULL -g "$chromsizes" -i ${g1[*]} ${g2[*]} \
-     | grep -v "NULL" \
-     | cut -f 1-2,4-    
+ironbed unionbedg --filler NULL -g "$chromsizes" -i ${g1[*]} ${g2[*]} | grep -v "NULL" | cut -f 1-2,4-    
