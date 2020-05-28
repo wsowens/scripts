@@ -17,11 +17,13 @@ bed2meth
 checkfolder
 clip4bw
 dmap2_reads
+fastq_count
 filtercov
 fixdmap
 full
 ironbed
 lesswich
+log_data.sh
 mapped_reads
 nuclear
 poolbed
