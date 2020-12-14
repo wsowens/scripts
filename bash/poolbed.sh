@@ -37,10 +37,8 @@ for f in $bedgraphs
 do
     # include the whole filename to avoid collisions
     base=$(echo $f | tr / _)
-    #awk -v OFS="\t" -e '{print $1, $2, $3, $5 "," $6}'  > "${met_dir}/${base}.awk"
-    cut -f1-3,5 $f > "${cov_dir}/${base}"
-    cut -f6 $f | paste -d"," "${cov_dir}/${base}" - > "${met_dir}/${base}"
-    #diff "${met_dir}/${base}" "${met_dir}/${base}.awk"
+    # cluster the cov and meth column together for unionbedg
+    awk -v OFS="\t" -e '{print $1, $2, $3, $5 "," $6}' "$f" > "${met_dir}/${base}"
     cut_bedgraphs+=("${met_dir}/${base}")
 done
 
@@ -60,5 +58,5 @@ bedtools unionbedg -g ${chroms} -empty -filler "0,0" -i ${cut_bedgraphs[*]} | aw
         print $1, $2, $3, unconverted / coverage, coverage, unconverted
 }'
 
-rm -r "$cov_dir"
-rm -r "$met_dir"
+# rm -r "$cov_dir"
+# rm -r "$met_dir"
